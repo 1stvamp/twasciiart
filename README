@@ -1,0 +1,5 @@
+Simple python script for piping ASCII art and other such textual blobs to Twitter.
+
+First created at the inaugral Leeds Hackspace Hack Day (Saturday 10th October 2009),
+in reply to a challenge to get ASCII art to appear on the twype-writer (a type writer
+hooked up via an arduino and a laptop to follow the #lhshackday hashtag on twitter).
