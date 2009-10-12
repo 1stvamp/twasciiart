@@ -68,7 +68,7 @@ def main(argv):
         sys.exit(2)
 
     for l in sys.stdin.readlines():
-            line = line.sub(r'\s', replacer)
+            line = e.sub(r'\s', replacer, line)
             if len(line) > length:
                     print "Lines too long to fit in a single tweet, change lines (or hashtag if present"
                     usage()
