@@ -7,7 +7,7 @@ import re
 import getopt
 
 def usage():
-        print >> sys.stdout """twasciiart.py accepts text sent via stdin, with optional arguments:
+        print >> sys.stdout, """twasciiart.py accepts text sent via stdin, with optional arguments:
 echo "test" | ./twasciiart.py -u user42 -p somepass123 [-l -d]
 -u --username : twitter username
 -p --password : twitter password
@@ -32,7 +32,7 @@ def main(argv):
         password = None
         length = 140
         line_length = 80
-        delay = 120
+        delay = 7
         tag = ""
         line_number = None
         replacer = "."
@@ -54,7 +54,7 @@ def main(argv):
             elif opt in ("-r", "--replacer"):
                 replacer = arg
         if not username or not password:
-            print >> sys.stderr "username and password are required"
+            print >> sys.stderr, "username and password are required"
             usage()
             sys.exit(2)
         tag = (" #%s" % tag) if tag else ""
@@ -62,23 +62,18 @@ def main(argv):
         tweets = []
         tw = Api(username=username, password=password)
 
-        if not len(sys.stdin):
-            print >> sys.stderr "No input from stdin"
-            usage()
-            sys.exit(2)
-
         def format_line(line):
-            return e.sub(r'\s', replacer, line)
+            return re.sub(r'\s', replacer, line)
 
         if line_number:
                 if len(format_line(sys.stdin.read())) > length:
-                        print >> sys.stderr "Lines too long to fit in a single tweet, change lines (or hashtag if present)"
+                        print >> sys.stderr, "Lines too long to fit in a single tweet, change lines (or hashtag if present)"
                         usage()
                         sys.exit(2)
-        for l in sys.stdin.readlines():
+        for line in sys.stdin.readlines():
                 line = format_line(line)
                 if len(line) > length:
-                        print >> sys.stderr "Lines too long to fit in a single tweet, change lines (or hashtag if present)"
+                        print >> sys.stderr, "Lines too long to fit in a single tweet, change lines (or hashtag if present)"
                         usage()
                         sys.exit(2)
                 else:
@@ -94,10 +89,10 @@ def main(argv):
         if tweets:
                 for i, tweet in enumerate(tweets):
                         time.sleep(delay)
-                        print >> sys.stdout 'Sending tweet %d of %d: "%s"' % (i, len(tweets), tweet)
-                        tw.PostUpdate(tweet)
-                        print >> sys.stdout "Sent!"
-        print >> sys.stdout "Done."
+                        print >> sys.stdout, 'Sending tweet %d of %d: "%s"' % (i, len(tweets), tweet)
+#                        tw.PostUpdate(tweet)
+                        print >> sys.stdout, "Sent!"
+        print >> sys.stdout, "Done."
 
 if __name__ == "__main__":
             main(sys.argv[1:])
